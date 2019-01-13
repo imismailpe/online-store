@@ -5,7 +5,7 @@ const ProdCard = ({product,buyclick}) => {
 	return (
 		<div className="productCard">
 				<div className="white prodImg">
-				    <img src={`${product.image}${product.name}palakad`} className="grow" alt={product.name}/>
+				    <img src={`${product.image}${product.name}imismailpe`} className="grow" alt={product.name}/>
 				    <div className="f5 f4-ns tl link prodName twrap bg-black-70">
 				    	{product.name}
 				    </div>

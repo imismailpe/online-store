@@ -54,17 +54,21 @@ class App extends Component {
 	*/
 	}
 	componentDidUpdate(){
-		if(this.myCart.includes(this.props.item)){
-			this.props.item[this.props.item].quantity+=1;
-		}
-		else{
+		this.addItemToCart();
+	}
+	addItemToCart = ()=>{
+		if(this.myCart.filter(eachItem => eachItem.id===this.props.item).length===0){
 			const newItem = new Object();
 			newItem.id=this.props.item;
 			newItem.quantity=1;
 			this.myCart.push(newItem);
+			console.log("added new item : ",this.myCart);
 		}
-		console.log("this props-",this.props);
-		console.log("cart : ",this.myCart);
+		else{
+			this.myCart.filter(eachItem => eachItem.id===this.props.item)[0].quantity+=1;
+			console.log("updated quantity : ",this.myCart);
+		}
+		
 	}
 	setCategorizedProducts = (filteredCategory)=>{
 		this.categorizedProducts = this.state.products.filter(product =>{
