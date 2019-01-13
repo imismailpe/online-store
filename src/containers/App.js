@@ -27,6 +27,7 @@ class App extends Component {
 	filteredProducts = [];
 	filteredCategory = [];
 	categorizedProducts = [];
+	cartProducts = [];
 	myCart = [];
 	constructor(){
 		super();
@@ -34,7 +35,8 @@ class App extends Component {
 			products:Products,
 			//searchKeyword:'',
 			filteredCategory : '',
-			myCart : ''
+			myCart : '',
+			cartProducts:''
 		}
 	}
 	/*
@@ -70,6 +72,20 @@ class App extends Component {
 		}
 		
 	}
+	onShowCart = ()=>{
+		this.cartProducts.splice(0,this.myCart.length);
+		this.myCart.forEach((eachItem)=>{
+			const selectedProduct=this.state.products.filter(product=>product.name===eachItem.id)[0];
+			const cartItem=new Object();
+			cartItem.name=selectedProduct.name;
+			cartItem.price=selectedProduct.price;
+			cartItem.quantity=eachItem.quantity;
+			cartItem.total=selectedProduct.price*eachItem.quantity;
+			this.cartProducts.push(cartItem);
+		})
+		console.log(this.cartProducts);
+		this.setState({myCart:this.cartProducts});
+	}
 	setCategorizedProducts = (filteredCategory)=>{
 		this.categorizedProducts = this.state.products.filter(product =>{
 			return product.category.includes(filteredCategory);
@@ -83,7 +99,6 @@ class App extends Component {
 		//console.log("clicked category is ",event.target.value);
 		//change electronics to this.state.filteredCategory
   		this.setCategorizedProducts(this.state.filteredCategory);
-
   		this.filteredProducts = this.categorizedProducts;
   		//this.categorizedProducts.map((item,i)=>{
 	  	//	return (<ProdCardList products={this.categorizedProducts}/>);
@@ -118,7 +133,7 @@ class App extends Component {
 		        </ProdCardList>
 	        </div>
 	        <div>
-	    		<CartBar mycart={this.myCart}/>
+	    		<CartBar mycart={this.myCart} showcart={this.onShowCart}/>
 	    	</div>
         </ErrorBoundary>
         </div>
