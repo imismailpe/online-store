@@ -55,36 +55,26 @@ class App extends Component {
 		.then(onlineprods => {this.setState({products:onlineprods})});
 	*/
 	}
-	componentDidUpdate(){
-		this.addItemToCart();
-	}
 	addItemToCart = ()=>{
-		if(this.myCart.filter(eachItem => eachItem.id===this.props.item).length===0){
-			const newItem = new Object();
-			newItem.id=this.props.item;
+		const currentItem=this.props.item;
+		if(this.myCart.filter(eachItem => eachItem.id===currentItem).length===0){
+			const selectedProduct=this.state.products.filter(product=>product.name===currentItem)[0];
+			const newItem=new Object();
+			newItem.name=selectedProduct.name;
+			newItem.price=selectedProduct.price;
 			newItem.quantity=1;
+			newItem.total=selectedProduct.price;
 			this.myCart.push(newItem);
 			console.log("added new item : ",this.myCart);
 		}
 		else{
-			this.myCart.filter(eachItem => eachItem.id===this.props.item)[0].quantity+=1;
+			this.myCart.filter(eachItem => eachItem.id===currentItem)[0].quantity+=1;
 			console.log("updated quantity : ",this.myCart);
 		}
 		
 	}
 	onShowCart = ()=>{
-		this.cartProducts.splice(0,this.myCart.length);
-		this.myCart.forEach((eachItem)=>{
-			const selectedProduct=this.state.products.filter(product=>product.name===eachItem.id)[0];
-			const cartItem=new Object();
-			cartItem.name=selectedProduct.name;
-			cartItem.price=selectedProduct.price;
-			cartItem.quantity=eachItem.quantity;
-			cartItem.total=selectedProduct.price*eachItem.quantity;
-			this.cartProducts.push(cartItem);
-		})
-		console.log(this.cartProducts);
-		this.setState({myCart:this.cartProducts});
+		console.log("cart : ",this.myCart);
 	}
 	setCategorizedProducts = (filteredCategory)=>{
 		this.categorizedProducts = this.state.products.filter(product =>{
@@ -118,6 +108,10 @@ class App extends Component {
 		return product.category.includes(this.state.filteredCategory);
 		//console.log("categorizedProducts is ",this.categorizedProducts);
 	});
+	if(this.props.item.length>0){
+		this.addItemToCart();
+	}
+    
     return (
     	<div className="bg-light-white tc">
     	<ErrorBoundary>
