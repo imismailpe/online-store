@@ -1,8 +1,8 @@
 export const Products = [
   {
     id: 1,
-    name: 'Bluetooth 4.0 Speaker',
-    price: 2500,
+    name: 'B&B Bluetooth 5.1 Speaker',
+    price: 3500,
     image: 'https://picsum.photos/250/350/?',
     category: ['Electronics'],
     description: 'Connect any devices in wireless mode and play anything. Latest bluetooth 4.0 connectivity and AUX cable support.' 

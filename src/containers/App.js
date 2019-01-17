@@ -6,6 +6,7 @@ import NavBar from '../components/NavBar';
 import CartBar from '../components/CartBar';
 import {Products} from '../components/Products';
 import CategoryList from '../components/CategoryList';
+import CartModal from '../components/CartModal';
 import ErrorBoundary from '../components/ErrorBoundary';
 import {setSearchField,addToCart} from '../actions.js';
 
@@ -36,7 +37,8 @@ class App extends Component {
 			//searchKeyword:'',
 			filteredCategory : '',
 			myCart : '',
-			cartProducts:''
+			cartProducts:'',
+			show: false
 		}
 	}
 	/*
@@ -47,7 +49,6 @@ class App extends Component {
 	}
 	*/
 	componentDidMount(){
-		
 	/*
 		//fetching from internet
 		fetch('https://jsonplaceholder.typicode.com/users')
@@ -57,8 +58,10 @@ class App extends Component {
 	}
 	addItemToCart = ()=>{
 		const currentItem=this.props.item;
-		if(this.myCart.filter(eachItem => eachItem.id===currentItem).length===0){
+		if(this.myCart.filter(eachItem => eachItem.name===currentItem).length===0){
 			const selectedProduct=this.state.products.filter(product=>product.name===currentItem)[0];
+			console.log("selectedProduct=",selectedProduct);
+			console.log("currentItem=",currentItem);
 			const newItem=new Object();
 			newItem.name=selectedProduct.name;
 			newItem.price=selectedProduct.price;
@@ -68,13 +71,17 @@ class App extends Component {
 			console.log("added new item : ",this.myCart);
 		}
 		else{
-			this.myCart.filter(eachItem => eachItem.id===currentItem)[0].quantity+=1;
+			this.myCart.filter(eachItem => eachItem.name===currentItem)[0].quantity+=1;
 			console.log("updated quantity : ",this.myCart);
 		}
-		
+		console.log(this.myCart.filter(eachItem => eachItem.name===currentItem)[0]);
 	}
 	onShowCart = ()=>{
 		console.log("cart : ",this.myCart);
+		this.setState({show: true})
+	}
+	onHideCart = ()=>{
+		this.setState({show: false})
 	}
 	setCategorizedProducts = (filteredCategory)=>{
 		this.categorizedProducts = this.state.products.filter(product =>{
@@ -127,7 +134,7 @@ class App extends Component {
 		        </ProdCardList>
 	        </div>
 	        <div>
-	    		<CartBar mycart={this.myCart} showcart={this.onShowCart}/>
+	    		<CartBar mycart={this.myCart} show={this.state.show} showcart={this.onShowCart} hidecart={this.onHideCart}/>
 	    	</div>
         </ErrorBoundary>
         </div>
